@@ -33,7 +33,6 @@
 #
 #     ./run-in-container.sh ./manage.py migrate
 #     ./run-in-container.sh ./manage.py createsuperuser
-#     ./run-in-container.sh tail -f access.log
 #
 # If your Python pods are labeled with a name other than "django", you can use:
 #
@@ -41,11 +40,11 @@
 #
 # You can also specify a POD by index:
 #
-#     POD_INDEX=1 ./run-in-container.sh tail -f access.log
+#     POD_INDEX=1 ./run-in-container.sh ./manage.py check
 #
 # Or both together:
 #
-#     POD_NAME=frontend POD_INDEX=2 ./run-in-container.sh tail -f access.log
+#     POD_NAME=frontend POD_INDEX=2 ./run-in-container.sh ./manage.py check
 
 
 # Get name of a currently deployed pod by label and index
