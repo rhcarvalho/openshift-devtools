@@ -10,7 +10,7 @@
 
 # Here is how you would run a command in a pod specified by label [1]:
 #
-# 1. Inpect the output of the command below to find the name of a pod that
+# 1. Inspect the output of the command below to find the name of a pod that
 #    matches a given label:
 #
 #     oc get pods -l <your-label-selector>
