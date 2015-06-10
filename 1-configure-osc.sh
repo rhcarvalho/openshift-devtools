@@ -6,4 +6,7 @@ export OPENSHIFTCONFIG=`pwd`/openshift.local.config/master/admin.kubeconfig
 export CURL_CA_BUNDLE=`pwd`/openshift.local.config/master/ca.crt
 [[ -f $CURL_CA_BUNDLE ]] || (echo "certificate not found"; exit 1)
 
-$(set -x; sudo chmod a+rwX "$OPENSHIFTCONFIG"; set +x)
+(
+  set -x
+  sudo chmod a+rwX "$OPENSHIFTCONFIG"
+)
