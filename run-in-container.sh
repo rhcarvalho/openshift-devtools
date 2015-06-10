@@ -16,22 +16,17 @@
 #     oc get pods -l <your-label-selector>
 #
 # 2. Open a bash shell in the pod of your choice.
-#    Because of how the images produced with CentOS and RHEL work currently [3],
+#    Because of how the images produced with CentOS and RHEL work currently [2],
 #    we need to wrap commands with `bash` to enable any Software Collections
 #    that may be used (done automatically inside every bash shell).
 #
 #     oc exec -p <pod-name> -it -- bash
 #
-# 3. Because of how `kubectl exec` and `oc exec` work right now [2], your
-#    current working directory is root (/). Change it to where your code lives:
-#
-#     cd $HOME
-# 4. Finally, execute any command that you need and exit the shell.
+# 3. Finally, execute any command that you need and exit the shell.
 #
 # Related GitHub issues:
 # [1] https://github.com/GoogleCloudPlatform/kubernetes/issues/8876
-# [2] https://github.com/GoogleCloudPlatform/kubernetes/issues/7770
-# [3] https://github.com/openshift/origin/issues/2001
+# [2] https://github.com/openshift/origin/issues/2001
 
 
 # You can use this wrapper like this:
@@ -59,4 +54,4 @@ POD_INSTANCE_NAME=`oc get pods \
   -t "{{ with index .items ${POD_INDEX:-0} }}{{ .metadata.name }}{{ end }}"`
 
 # Run command in a container of the specified pod:
-oc exec -p "$POD_INSTANCE_NAME" -it -- bash -c "cd \$HOME && ${@:-echo}"
+oc exec -p "$POD_INSTANCE_NAME" -it -- bash -c "${@:-echo}"
