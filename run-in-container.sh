@@ -4,8 +4,8 @@
 # Python application code lives in.
 
 # You can accomplish the same results by using regular commands from OpenShift.
-# This script is just wrapping calls to `osc` to make it a little more
-# convenient to use. In the future, the `osc` cli tool might incorporate changes
+# This script is just wrapping calls to `oc` to make it a little more
+# convenient to use. In the future, the `oc` cli tool might incorporate changes
 # that make this script obsolete.
 
 # Here is how you would run a command in a pod specified by label [1]:
@@ -13,13 +13,13 @@
 # 1. Inpect the output of the command below to find the name of a pod that
 #    matches a given label:
 #
-#     osc get pods -l <your-label-selector>
+#     oc get pods -l <your-label-selector>
 #
 # 2. Open a bash shell in the pod of your choice:
 #
-#     osc exec -p <pod-name> -it -- bash
+#     oc exec -p <pod-name> -it -- bash
 #
-# 3. Because of how `kubectl exec` and `osc exec` work right now [2], your
+# 3. Because of how `kubectl exec` and `oc exec` work right now [2], your
 #    current working directory is root (/). Change it to where your code lives:
 #
 #     cd $HOME
@@ -57,10 +57,10 @@
 
 
 # Get name of a currently deployed pod by label and index
-POD_INSTANCE_NAME=`osc get pods \
+POD_INSTANCE_NAME=`oc get pods \
   -l "name=${POD_NAME:-django}" \
   -t "{{ with index .items ${POD_INDEX:-0} }}{{ .metadata.name }}{{ end }}"`
 
 # Run command in a container of the specified pod:
-osc exec -p "$POD_INSTANCE_NAME" -it -- bash -c \
+oc exec -p "$POD_INSTANCE_NAME" -it -- bash -c \
   "cd \$HOME && source scl_source enable python33 && ${@:-echo}"
