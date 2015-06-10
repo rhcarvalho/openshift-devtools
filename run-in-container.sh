@@ -15,7 +15,10 @@
 #
 #     oc get pods -l <your-label-selector>
 #
-# 2. Open a bash shell in the pod of your choice:
+# 2. Open a bash shell in the pod of your choice.
+#    Because of how the images produced with CentOS and RHEL work currently [3],
+#    we need to wrap commands with `bash` to enable any Software Collections
+#    that may be used (done automatically inside every bash shell).
 #
 #     oc exec -p <pod-name> -it -- bash
 #
@@ -23,13 +26,7 @@
 #    current working directory is root (/). Change it to where your code lives:
 #
 #     cd $HOME
-#
-# 4. Because of how the images produced with CentOS and RHEL work currently [3],
-#    you need to manually enable any Software Collections you need to use:
-#
-#     source scl_source enable python33
-#
-# 5. Finally, execute any command that you need and exit the shell.
+# 4. Finally, execute any command that you need and exit the shell.
 #
 # Related GitHub issues:
 # [1] https://github.com/GoogleCloudPlatform/kubernetes/issues/8876
@@ -62,5 +59,4 @@ POD_INSTANCE_NAME=`oc get pods \
   -t "{{ with index .items ${POD_INDEX:-0} }}{{ .metadata.name }}{{ end }}"`
 
 # Run command in a container of the specified pod:
-oc exec -p "$POD_INSTANCE_NAME" -it -- bash -c \
-  "cd \$HOME && source scl_source enable python33 && ${@:-echo}"
+oc exec -p "$POD_INSTANCE_NAME" -it -- bash -c "cd \$HOME && ${@:-echo}"
