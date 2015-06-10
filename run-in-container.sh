@@ -29,22 +29,23 @@
 # [2] https://github.com/openshift/origin/issues/2001
 
 
-# You can use this wrapper like this:
+# Usage examples:
 #
 #     ./run-in-container.sh ./manage.py migrate
 #     ./run-in-container.sh ./manage.py createsuperuser
+#     ./run-in-container.sh ./manage.py shell
 #
 # If your Python pods are labeled with a name other than "django", you can use:
 #
-#     POD_NAME=something ./run-in-container.sh ./manage.py check
+#     POD_NAME=name ./run-in-container.sh ./manage.py check
 #
-# You can also specify a POD by index:
+# If there is more than one replica, you can also specify a POD by index:
 #
-#     POD_INDEX=1 ./run-in-container.sh ./manage.py check
+#     POD_INDEX=1 ./run-in-container.sh ./manage.py shell
 #
 # Or both together:
 #
-#     POD_NAME=frontend POD_INDEX=2 ./run-in-container.sh ./manage.py check
+#     POD_NAME=frontend POD_INDEX=2 ./run-in-container.sh ./manage.py shell
 
 
 # Get name of a currently deployed pod by label and index
