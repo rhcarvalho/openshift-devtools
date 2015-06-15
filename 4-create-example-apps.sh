@@ -19,7 +19,7 @@ function create_project() {
   echo "Creating project ${project_name} ..."
   oc new-project ${project_name} --display-name="Example: ${project_name}"
   oadm policy add-role-to-user admin demo -n ${project_name}
-  oc process -f "$template" | oc create -f -
+  oc new-app "$template"
 }
 
 function create_image_streams() {
