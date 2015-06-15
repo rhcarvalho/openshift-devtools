@@ -1,7 +1,8 @@
 #!/bin/bash
 BASE_PATH=${BASE_PATH:-/data/src/github.com/openshift}
 
-declare -a projects=(django rails nodejs cakephp dancer)
+[ -z "$PROJECTS" ] && \
+declare -a PROJECTS=(django rails nodejs cakephp dancer)
 
 function create_project() {
   local name="$1"
@@ -22,7 +23,7 @@ function create_project() {
   oc new-app "$template"
 }
 
-for name in ${projects[@]}; do
+for name in ${PROJECTS[@]}; do
   create_project ${name}
   create_project ${name} postgresql
   create_project ${name} mysql
