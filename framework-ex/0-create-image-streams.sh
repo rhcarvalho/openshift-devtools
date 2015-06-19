@@ -6,7 +6,7 @@ BASE_PATH=${BASE_PATH:-/data/src/github.com/openshift}
 image_streams="${BASE_PATH}/origin/examples/image-streams/image-streams-centos7.json"
 
 if [ ! -f "${image_streams}" ]; then
-  echo "Image streams not found: ${image_streams}"
+  echo >&2 "Image streams not found: ${image_streams}"
   exit 1
 fi
 
