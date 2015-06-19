@@ -13,7 +13,7 @@ function create_project() {
   local project_name="${name}-ex${suffix}"
   local template=${BASE_PATH}/${name}-ex/openshift/templates/${name}${db}.json
 
-  [ ! -f "$template" ] && return
+  [ ! -f "$template" ] && return 1
 
   if oc get project ${project_name} &>/dev/null; then
     info "Project ${project_name} already exists, skipped."
@@ -27,8 +27,7 @@ function create_project() {
 
 for name in ${PROJECTS[@]}; do
   create_project ${name}
-  create_project ${name} postgresql
-  create_project ${name} mysql
+  create_project ${name} postgresql || create_project ${name} mysql || create_project ${name} mongodb
 done
 
 info "Done."
