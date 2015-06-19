@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 source "$(dirname ${BASH_SOURCE})/../common.sh"
 
 BASE_PATH=${BASE_PATH:-/data/src/github.com/openshift}
