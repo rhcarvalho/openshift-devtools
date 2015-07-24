@@ -8,6 +8,6 @@ info "Unmounting volumes ..."
 findmnt -lo TARGET | grep openshift.local.volumes | xargs -r sudo umount
 
 info "Removing files ..."
-rm -vrf openshift.local.*
+sudo rm -vrf openshift.local.*
 
 info "Done."
