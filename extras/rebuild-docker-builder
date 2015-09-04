@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+tmpdir=$(mktemp -d)
+
+cp $(which openshift) ${tmpdir}
+cp "$(dirname ${BASH_SOURCE})/Dockerfile.docker-builder" ${tmpdir}/Dockerfile
+
+docker build -t openshift/origin-docker-builder ${tmpdir}
+
+rm -vrf ${tmpdir}
