@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# remove exited containers
+docker rm $(docker ps --filter=status=exited -q)
+
+# remove dangling images
+docker rmi $(docker images -f=dangling=true -q)
+
+# exterminate all volumes
+sudo rm -rf /var/lib/docker/v{fs,olumes}
