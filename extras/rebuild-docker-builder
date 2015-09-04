@@ -3,10 +3,28 @@
 set -e
 
 tmpdir=$(mktemp -d)
+echo ${tmpdir}
 
+# Copy openshift binary from PATH
 cp $(which openshift) ${tmpdir}
-cp "$(dirname ${BASH_SOURCE})/Dockerfile.docker-builder" ${tmpdir}/Dockerfile
 
+# Find parent image id to avoid stacking multiple COPY layers
+parent=$(docker history --no-trunc openshift/origin-docker-builder | \
+	grep -v 'COPY file.*in /usr/bin/openshift' | \
+	awk 'NR==2 {print $1}')
+
+# Write Dockerfile
+set +e
+read -d '' Dockerfile <<EOF
+FROM ${parent}
+
+COPY openshift /usr/bin/openshift
+EOF
+set -e
+echo "${Dockerfile}" > ${tmpdir}/Dockerfile
+
+# Build new image
 docker build -t openshift/origin-docker-builder ${tmpdir}
 
+# Cleanup
 rm -vrf ${tmpdir}

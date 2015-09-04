@@ -1,3 +1,0 @@
-FROM openshift/origin-docker-builder
-
-COPY openshift /usr/bin/openshift
