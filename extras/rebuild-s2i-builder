@@ -1,6 +1,6 @@
 #!/bin/bash
 source "$(dirname ${BASH_SOURCE})/rebuild-openshift-image.sh"
 
-image="openshift/origin-docker-builder"
+image="openshift/origin-sti-builder"
 
 rebuild-openshift-image "${image}"
