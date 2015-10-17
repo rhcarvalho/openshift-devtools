@@ -1,17 +1,20 @@
 #!/bin/bash
+source "$(dirname ${BASH_SOURCE})/../common.sh"
 
 set -e
 
-tmpdir=$(mktemp -d)
-echo ${tmpdir}
+image="openshift/origin-docker-builder"
 
-# Copy openshift binary from PATH
-cp $(which openshift) ${tmpdir}
+tmpdir="$(mktemp -d)"
+openshiftbin="$(which openshift)"
+
+info "Copying openshift binary to temporary work directory ..."
+cp -av "${openshiftbin}" "${tmpdir}"
 
 # Find parent image id to avoid stacking multiple COPY layers
-parent=$(docker history --no-trunc openshift/origin-docker-builder | \
-	grep -v 'COPY file.*in /usr/bin/openshift' | \
-	awk 'NR==2 {print $1}')
+parent=$(docker history --no-trunc ${image} | \
+         grep -v 'COPY file.*in /usr/bin/openshift' | \
+         awk 'NR==2 {print $1}')
 
 # Write Dockerfile
 set +e
@@ -23,8 +26,10 @@ EOF
 set -e
 echo "${Dockerfile}" > ${tmpdir}/Dockerfile
 
-# Build new image
-docker build -t openshift/origin-docker-builder ${tmpdir}
+info "Building Docker image ${image} ..."
+docker build -t "${image}" "${tmpdir}"
 
 # Cleanup
-rm -vrf ${tmpdir}
+rm -vrf "${tmpdir}"
+
+info "Done."
