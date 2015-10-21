@@ -6,6 +6,7 @@ function rebuild-openshift-image() {
   set -e
 
   image="$1"
+  base_image="${image}-base"
 
   tmpdir="$(mktemp -d)"
   openshiftbin="$(which openshift)"
@@ -13,15 +14,18 @@ function rebuild-openshift-image() {
   info "Copying openshift binary to temporary work directory ..."
   cp -av "${openshiftbin}" "${tmpdir}"
 
-  # Find parent image id to avoid stacking multiple COPY layers
-  parent=$(docker history --no-trunc ${image} | \
-           grep -v 'COPY file.*in /usr/bin/openshift' | \
-           awk 'NR==2 {print $1}')
+  # Find base image id to avoid stacking multiple COPY layers
+  base_id=$(docker history --no-trunc ${image} | \
+            grep -v 'COPY file.*in /usr/bin/openshift' | \
+            awk 'NR==2 {print $1}')
+
+  info "Tagging the base Docker image ${base_image} ..."
+  docker tag "${base_id}" "${base_image}"
 
   # Write Dockerfile
   set +e
   read -d '' Dockerfile <<EOF
-  FROM ${parent}
+  FROM ${base_image}
 
   COPY openshift /usr/bin/openshift
 EOF
