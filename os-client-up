@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# source this file to prepare the current shell to work with OpenShift CLI and
+# run all initialization steps
+
+shopt -s nullglob
+
+scripts=$(dirname ${BASH_SOURCE})
+
+. ${scripts}/1-*
+${scripts}/2-*
+${scripts}/3-*
+${scripts}/4-*
+
+# always switch to the demo project to be in a known state
+oc project demo
