@@ -60,18 +60,17 @@ $ /scripts/0-start-openshift --latest-images
 ```
 
 Now move to the upper screen, and, from the same directory that you started the
-server, create a new project:
+server, create a registry, a new project and image streams:
 
 ```
-$ . /scripts/1-export-config       # setup client to communicate with the server
-                                   # note that you need to `source` this script,
-                                   # therefore the "." there
-$ /scripts/2-create-registry-and-router
-$ /scripts/3-create-project
-$ /scripts/4-create-image-streams  # optional
+$ . /scripts/oc-up
 ```
 
+That should leave your shell ready to work on the "demo" project.
 You're ready to deploy new apps with `oc new-app`.
+
+Note that you need a "." (or `source`) before the script path.
+
 
 ### Cleaning up
 
@@ -95,5 +94,5 @@ Or delete the project and create it again:
 
 ```
 $ oc delete project demo
-$ /scripts/3-create-project
+$ . /scripts/oc-up   # or /scripts/3-create-project
 ```
