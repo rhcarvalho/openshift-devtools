@@ -6,7 +6,7 @@ function rebuild-openshift-image() {
   set -e
 
   image="$1"
-  base_image="${image}-base"
+  base_image="${image}-base-$(tr -dc '[:lower:][:digit:]' </dev/urandom | dd bs=4 count=3 2>/dev/null)"
 
   tmpdir="$(mktemp -d)"
   openshiftbin="$(which openshift)"
@@ -37,6 +37,7 @@ EOF
 
   # Cleanup
   rm -vrf "${tmpdir}"
+  docker rmi "${base_image}"
 
   info "Done."
 }
