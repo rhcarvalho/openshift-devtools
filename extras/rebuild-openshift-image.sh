@@ -1,12 +1,14 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
+source "$(dirname ${BASH_SOURCE})/../common.sh"
+
 function rebuild-openshift-image() {
-  source "$(dirname ${BASH_SOURCE})/../common.sh"
-
-  set -e
-
   image="$1"
-  base_image="${image}-base-$(tr -dc '[:lower:][:digit:]' </dev/urandom | dd bs=4 count=3 2>/dev/null)"
+  base_image="${image}-base-$(tr -dc '[:lower:][:digit:]' </dev/urandom | dd bs=4 count=3 2>/dev/null || :)"
 
   tmpdir="$(mktemp -d)"
   openshiftbin="$(which openshift)"
