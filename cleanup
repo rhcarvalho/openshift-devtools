@@ -1,13 +1,19 @@
-#!/bin/bash
-source "$(dirname ${BASH_SOURCE})/common.sh"
+#!/bin/python
+from common import info, warn, sh
 
-info "Stopping Docker containers ..."
-docker ps | awk 'index($NF,"k8s_")==1 { print $1 }' | xargs -l -r docker stop
 
-info "Unmounting volumes ..."
-findmnt -lo TARGET | grep openshift.local.volumes | xargs -r sudo umount
+info("Stopping Docker containers ...")
+sh("docker ps | awk 'index($NF,\"k8s_\")==1 { print $1 }' | xargs -l -r docker stop")
 
-info "Removing files ..."
-sudo rm -vrf openshift.local.*
+with open("/proc/mounts") as f:
+    volumes = [line.split()[1] for line in f if "openshift.local.volumes" in line]
+    if volumes:
+        info("Unmounting volumes ...")
+        sh(["sudo", "umount"] + volumes)
+    else:
+        warn("No OpenShift volumes found!")
 
-info "Done."
+info("Removing files ...")
+sh("sudo rm -vrf openshift.local.*")
+
+info("Done.")
