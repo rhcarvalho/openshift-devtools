@@ -1,8 +1,12 @@
 #!/bin/bash
 source "$(dirname ${BASH_SOURCE})/common.sh"
 
-info "Creating project 'demo' ..."
-oc new-project demo --display-name="OpenShift Demo Project" --description="This is a demo project"
-oadm policy add-role-to-user admin demo -n demo
+NAME="${NAME:-demo}"
+DISPLAY_NAME="${DISPLAY_NAME:-OpenShift Demo Project}"
+DESCRIPTION="${DESCRIPTION:-This is a demo project}"
+
+info "Creating project '${NAME}' ..."
+oc new-project "${NAME}" --display-name="${DISPLAY_NAME}" --description="${DESCRIPTION}"
+oadm policy add-role-to-user admin demo -n "${NAME}"
 
 info "Done."
