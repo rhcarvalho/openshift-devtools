@@ -10,11 +10,6 @@ OPENSHIFT_REGISTRY_CONFIG=`pwd`/openshift.local.config/master/openshift-registry
 sudo chmod a+r $OPENSHIFT_REGISTRY_CONFIG
 oadm registry --create --credentials=$OPENSHIFT_REGISTRY_CONFIG -n default
 
-info "Creating router ..." "skipped: missing service account setup"
-OPENSHIFT_ROUTER_CONFIG=`pwd`/openshift.local.config/master/openshift-router.kubeconfig
-[[ -f $OPENSHIFT_ROUTER_CONFIG ]] || (echo "router config not found"; exit 1)
-sudo chmod a+r $OPENSHIFT_ROUTER_CONFIG
-# FIXME need a service account to create a router
-#oadm router --create --credentials=$OPENSHIFT_ROUTER_CONFIG --service-account=... -n default
+# FIXME create a router
 
 info "Done."
