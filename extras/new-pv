@@ -1,0 +1,31 @@
+#!/bin/bash
+# Helper to create persistent volumes.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Set PV_SIZE to customize the persistent volume size.
+PV_SIZE=${PV_SIZE:-50Gi}
+
+# Create a new persistent volume backed by a temporary directory.
+oc create -f - <<EOF
+{
+  "kind": "PersistentVolume",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "pv-$(date +'%s')"
+  },
+  "spec": {
+    "capacity": {
+      "storage": "${PV_SIZE}"
+    },
+    "hostPath": {
+      "path": "$(mktemp -d --tmpdir pv.XXXXX | tee >(xargs chmod a+rwx))"
+    },
+    "accessModes": [
+      "ReadWriteOnce"
+    ]
+  }
+}
+EOF
