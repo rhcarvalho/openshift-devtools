@@ -8,6 +8,8 @@ set -o pipefail
 # Set PV_SIZE to customize the persistent volume size.
 readonly PV_SIZE=${PV_SIZE:-50Gi}
 
+# Hint: set TMPDIR to set a custom path for the persistent volume, default /tmp.
+
 # Create a new persistent volume backed by a temporary directory.
 oc create -f - <<EOF
 {
