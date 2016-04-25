@@ -5,29 +5,45 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# The first argument to this script sets the number of persistent volumes to be
+# created, default 1.
+readonly N=${1:-1}
+
 # Set PV_SIZE to customize the persistent volume size.
 readonly PV_SIZE=${PV_SIZE:-50Gi}
 
 # Hint: set TMPDIR to set a custom path for the persistent volume, default /tmp.
 
-# Create a new persistent volume backed by a temporary directory.
-oc create -f - <<EOF
-{
-  "kind": "PersistentVolume",
-  "apiVersion": "v1",
-  "metadata": {
-    "name": "pv-$(date +'%s')-$(tr -dc '[:lower:][:digit:]' </dev/urandom | dd bs=4 count=1 2>/dev/null || :)"
-  },
-  "spec": {
-    "capacity": {
-      "storage": "${PV_SIZE}"
+# create_pv creates a new persistent volume backed by a temporary directory.
+function create_pv() {
+  local name
+  name="pv-$(date +'%s')-$(tr -dc '[:lower:][:digit:]' </dev/urandom | dd bs=4 count=1 2>/dev/null || :)"
+  local path
+  path="$(mktemp -d --tmpdir pv.XXXXX | tee >(xargs chmod a+rwx))"
+
+  oc create -f - <<EOF
+  {
+    "kind": "PersistentVolume",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "${name}"
     },
-    "hostPath": {
-      "path": "$(mktemp -d --tmpdir pv.XXXXX | tee >(xargs chmod a+rwx))"
-    },
-    "accessModes": [
-      "ReadWriteOnce"
-    ]
+    "spec": {
+      "capacity": {
+        "storage": "${PV_SIZE}"
+      },
+      "hostPath": {
+        "path": "${path}"
+      },
+      "accessModes": [
+        "ReadWriteOnce"
+      ]
+    }
   }
-}
 EOF
+}
+
+# Create persistent volumes.
+for ((n=0;n<${N};n++)); do
+  create_pv
+done
