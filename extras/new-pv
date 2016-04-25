@@ -14,7 +14,7 @@ oc create -f - <<EOF
   "kind": "PersistentVolume",
   "apiVersion": "v1",
   "metadata": {
-    "name": "pv-$(date +'%s')"
+    "name": "pv-$(date +'%s')-$(tr -dc '[:lower:][:digit:]' </dev/urandom | dd bs=4 count=1 2>/dev/null || :)"
   },
   "spec": {
     "capacity": {
