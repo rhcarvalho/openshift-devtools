@@ -10,5 +10,6 @@ export CURL_CA_BUNDLE=`pwd`/openshift.local.config/master/ca.crt
   source "$(dirname ${BASH_SOURCE})/common.sh"
   info "Exported KUBECONFIG and CURL_CA_BUNDLE."
   sudo chmod a+rwX "$KUBECONFIG"
+  sudo chmod a+w "$(dirname $KUBECONFIG)" # for KUBE lock files
   info "Done."
 )
