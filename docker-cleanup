@@ -6,5 +6,8 @@ docker rm $(docker ps --filter=status=exited -q)
 # remove dangling images
 docker rmi $(docker images -f=dangling=true -q)
 
+# remove dangling volumes
+docker volume rm $(docker volume ls -f=dangling=true -q)
+
 # exterminate all volumes
-sudo rm -rf /var/lib/docker/v{fs,olumes}
+#sudo rm -rf /var/lib/docker/v{fs,olumes}
