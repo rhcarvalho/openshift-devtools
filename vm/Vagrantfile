@@ -73,4 +73,41 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    # Ensure system is up-to-date.
+    sudo dnf -y upgrade
+
+    # Ensure some useful packages are installed.
+    PKGS=(
+      bash-completion
+      docker
+      # libffi-devel
+      openssl-devel
+      python-devel
+      python-pip
+      redhat-rpm-config
+      tree
+    )
+    sudo dnf -y install "\${PKGS[@]}"
+
+    # Verify installed packages.
+    rpm -V "\${PKGS[@]}"
+
+    # Upgrade pip to the latest version.
+    sudo pip install -U pip
+
+    # Install Python packages.
+    sudo pip install ansible ipython
+
+    # Create Docker group...
+
+    # Enable and start Docker service.
+    sudo systemctl enable docker --now
+
+    #dnf clean all
+
+    # TODO: setup device mapper for Docker
+    # https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/#/configure-direct-lvm-mode-for-production
+    # https://github.com/openshift/vagrant-openshift/blob/dcbcb4dbd14ab036f8b5a59860715325beee3b45/lib/vagrant-openshift/action/install_origin_base_dependencies.rb#L247-L272
+  SHELL
 end
