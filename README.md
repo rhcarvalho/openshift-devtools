@@ -18,22 +18,36 @@ These scripts here might help you specially if you:
 ## Setup
 
 My setup is to mount this repository at `/scripts` in my development virtual
-machine. I do it by patching my Vagrantfile (from origin):
+machine. I do it by placing a file `.vagrant-openshift.json` in my Origin
+checkout:
 
-```diff
-diff --git a/Vagrantfile b/Vagrantfile
-index bdc059c..82c5c82 100644
---- a/Vagrantfile
-+++ b/Vagrantfile
-@@ -200,6 +200,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-           type: vagrant_openshift_config['sync_folders_type'],
-           nfs_udp: false # has issues when using NFS from within a docker container
-       end
-+      config.vm.synced_folder "~/openshift-devtools", "/scripts"
-
-       if vagrant_openshift_config['private_network_ip']
-         config.vm.network "private_network", ip: vagrant_openshift_config['private_network_ip']
+```json
+{
+  "sync_folders": {
+    "~/openshift/src": {
+      "to": "/data/src"
+    },
+    "~/openshift/src/github.com/rhcarvalho/openshift-devtools": {
+      "to": "/scripts"
+    }
+  }
+}
 ```
+
+This file is loaded by the Vagrantfile in Origin, and is marked as ignored in
+the `.gitignore` file, so you can drop it into your checkout and don't worry
+about it messing up with your Git commits.
+
+Note that I configure two sync points:
+
+- The first puts the whole GOPATH workspace where I have my Origin checkout
+  into `/data/src` (the default GOPATH in the virtual machine). I do that so
+  that I can easily access the source for other projects, e.g.,
+  source-to-image.
+- The second sync point is the one with my scripts.
+
+I'm currently keeping a branch with my modifications related to Vagrant in:
+https://github.com/rhcarvalho/origin/commits/local/custom-vm
 
 
 ## Usage
