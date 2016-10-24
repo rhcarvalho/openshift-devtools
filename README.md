@@ -11,8 +11,9 @@ might be useful for some.
 These scripts here might help you specially if you:
 
 - are developing [OpenShift](https://github.com/openshift/origin)
-- use Vagrant + VirtualBox
-- always login as user "demo"
+- use Vagrant + VirtualBox (may work for libvirt and others as well)
+- always login as user "demo" (obviously, this can be changed by editing the
+  scripts)
 
 
 ## Setup
@@ -51,6 +52,15 @@ https://github.com/rhcarvalho/origin/commits/local/custom-vm
 
 
 ## Usage
+
+The first step is to create/start a virtual machine with:
+
+```bash
+vagrant up --provider=virtualbox
+```
+
+Note that the `--provider` flag is not needed after the second run / machine is
+already created.
 
 
 ### Setting up a demo project
