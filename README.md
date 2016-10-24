@@ -5,6 +5,7 @@ Personal scripts used while developing OpenShift 3.
 This is by no means meant to work for everyone, but I'm sharing in the hope it
 might be useful for some.
 
+
 ## Assumptions
 
 These scripts here might help you specially if you:
@@ -12,6 +13,7 @@ These scripts here might help you specially if you:
 - are developing [OpenShift](https://github.com/openshift/origin)
 - use Vagrant + VirtualBox
 - always login as user "demo"
+
 
 ## Setup
 
@@ -33,11 +35,15 @@ index bdc059c..82c5c82 100644
          config.vm.network "private_network", ip: vagrant_openshift_config['private_network_ip']
 ```
 
+
 ## Usage
+
 
 ### Setting up a demo project
 
-Use `vagrant ssh` to open a shell in your development virtual machine, use `tmux` to split your screen into two, one for the OpenShift server, and another one for general use:
+Use `vagrant ssh` to open a shell in your development virtual machine, use
+`tmux` to split your screen into two, one for the OpenShift server, and another
+one for general use:
 
 ```bash
 tmux              # or `tmux a -t0` to continue from an existing session
