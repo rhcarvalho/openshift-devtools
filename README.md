@@ -39,8 +39,8 @@ index bdc059c..82c5c82 100644
 
 Use `vagrant ssh` to open a shell in your development virtual machine, use `tmux` to split your screen into two, one for the OpenShift server, and another one for general use:
 
-```
-$ tmux              # or `tmux a -t0` to continue from an existing session
+```bash
+tmux              # or `tmux a -t0` to continue from an existing session
 ```
 
 Now type `ctrl+b` followed by `"` to split the screen horizontally.
@@ -48,22 +48,22 @@ Use `ctrl+b` and the arrow keys to move to the upper or lower screen.
 
 In the lower screen, start the OpenShift server:
 
-```
-$ cd                # start the server at the working directory /home/vagrant
-$ /scripts/0-start-openshift
+```bash
+cd                # start the server at the working directory /home/vagrant
+/scripts/0-start-openshift
 ```
 
 Alternatively, you may want to start it with:
 
-```
-$ /scripts/0-start-openshift --latest-images
+```bash
+/scripts/0-start-openshift --latest-images
 ```
 
 Now move to the upper screen, and, from the same directory that you started the
 server, create a registry, a new project and image streams:
 
-```
-$ . /scripts/oc-up
+```bash
+. /scripts/oc-up
 ```
 
 That should leave your shell ready to work on the "demo" project.
@@ -80,19 +80,19 @@ from the same directory where you started the server.
 I do this by going to the lower screen, killing the running server with `ctrl+c`
 and then:
 
-```
-$ /scripts/cleanup
+```bash
+/scripts/cleanup
 ```
 
 Alternatively, you might be fine with simply cleaning up your project:
 
-```
-$ oc delete all,pv,pvc -n demo --all
+```bash
+oc -n demo delete all,pv,pvc --all
 ```
 
 Or delete the project and create it again:
 
-```
-$ oc delete project demo
-$ . /scripts/oc-up   # or /scripts/3-create-project
+```bash
+oc delete project demo
+. /scripts/oc-up   # or /scripts/3-create-project
 ```
