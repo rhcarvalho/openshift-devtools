@@ -79,7 +79,7 @@ Vagrant.configure(2) do |config|
     set -o pipefail
 
     # Ensure system is up-to-date.
-    sudo dnf -y upgrade
+    dnf -y upgrade
 
     # Ensure some useful packages are installed.
     PKGS=(
@@ -92,21 +92,21 @@ Vagrant.configure(2) do |config|
       redhat-rpm-config
       tree
     )
-    sudo dnf -y install "\${PKGS[@]}"
+    dnf -y install "\${PKGS[@]}"
 
     # Verify installed packages.
     rpm -V "\${PKGS[@]}"
 
     # Upgrade pip to the latest version.
-    sudo pip install -U pip
+    pip install -U pip
 
     # Install Python packages.
-    sudo pip install ansible ipython
+    pip install ansible ipython
 
     # Create Docker group...
 
     # Enable and start Docker service.
-    sudo systemctl enable docker --now
+    systemctl enable docker --now
 
     #dnf clean all
 
