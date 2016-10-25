@@ -93,10 +93,17 @@ Vagrant.configure(2) do |config|
       redhat-rpm-config
       tree
     )
-    dnf -qy install "\${PKGS[@]}"
+    dnf -qy install "${PKGS[@]}"
 
-    # Verify installed packages.
-    rpm -V "\${PKGS[@]}"
+    # Verify installed packages, except python-pip. Skip python-pip because it
+    # gets upgraded later, and the installed files will differ from the
+    # installed RPM, what could cause this line to fail on a second run. Verify
+    # docker separately with `--nomode`, because after starting it for the first
+    # time it changes permissions of /var/lib/docker. The expansion below is
+    # intentionally unquoted, since all package names contain no space, and it
+    # is an error to pass an empty argument "" to `rpm -V`.
+    (shopt -sq extglob; rpm -V ${PKGS[@]/@(python-pip|docker)})
+    rpm -V --nomode docker
 
     # Upgrade pip to the latest version.
     pip install -qU pip
