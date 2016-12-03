@@ -1,7 +1,7 @@
 ---
 - name: Bootstrap dependencies of Ansible modules
   become: yes
-  raw: dnf install -y python2-dnf
+  raw: dnf install -y python2-dnf libselinux-python
   register: dnf_result
   changed_when: '"Nothing to do." not in dnf_result.stdout_lines'
 
@@ -20,3 +20,21 @@
   become: yes
   pip: name={{ item }} state=latest
   with_items: "{{ pip_pkgs }}"
+
+- name: Set GOPATH
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^export GOPATH='
+    line: 'export GOPATH=/code'
+
+- name: Set PATH
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^export PATH='
+    line: 'export PATH="$PATH:${GOPATH//://bin:}/bin"'
+
+- name: Set CDPATH
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^export CDPATH='
+    line: 'export CDPATH=.:${GOPATH//://src:}/src:/code/src/github.com/openshift'

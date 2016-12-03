@@ -5,6 +5,7 @@ pkgs:
   - tmux
   - tree
   - docker
+  - golang
 
 pip_pkgs:
   - ansible-container
