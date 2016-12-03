@@ -1,0 +1,7 @@
+---
+- name: Provision development VM
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: hello from Ansible
+      ping:

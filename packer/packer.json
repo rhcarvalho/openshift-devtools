@@ -1,0 +1,35 @@
+{
+  "description": "Builds a personal development VM",
+  "variables": {
+    "source_path": "{{env `PACKER_SOURCE_PATH`}}",
+    "vagrantfile_template": "{{env `PACKER_VAGRANTFILE_TEMPLATE`}}"
+  },
+  "builders": [{
+    "type": "virtualbox-ovf",
+    "source_path": "{{user `source_path`}}",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "shutdown_command": "sudo poweroff",
+    "guest_additions_mode": "disable",
+    "boot_wait": "0",
+    "headless": true
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "bootstrap.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "playbook.yml"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level": 9,
+      "vagrantfile_template": "{{user `vagrantfile_template`}}",
+      "keep_input_artifact": true
+    }
+  ]
+}
