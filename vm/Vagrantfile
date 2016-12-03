@@ -14,6 +14,11 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "fedora/25-cloud-base"
 
+  # Reset default synced folder settings.
+  # I don't know why the fedora/25-cloud-base image sets it to rsync.
+  # The empty string argument is required to reset the default behavior.
+  config.vm.synced_folder ".", "/vagrant", type: ""
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
