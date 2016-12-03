@@ -1,0 +1,22 @@
+---
+- name: Bootstrap dependencies of Ansible modules
+  become: yes
+  raw: dnf install -y python2-dnf
+  register: dnf_result
+  changed_when: '"Nothing to do." not in dnf_result.stdout_lines'
+
+- include: docker-pre.yml
+  when: '"docker" in "{{ pkgs }}"'
+
+- name: Install system packages
+  become: yes
+  package: name={{ item }} state=latest
+  with_items: "{{ pkgs }}"
+
+- include: docker-post.yml
+  when: '"docker" in "{{ pkgs }}"'
+
+- name: Install pip packages
+  become: yes
+  pip: name={{ item }} state=latest
+  with_items: "{{ pip_pkgs }}"

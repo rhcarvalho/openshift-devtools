@@ -1,0 +1,10 @@
+---
+- name: Ensure docker group exists
+  group:
+    name: docker
+
+- name: Append docker group to current user
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes

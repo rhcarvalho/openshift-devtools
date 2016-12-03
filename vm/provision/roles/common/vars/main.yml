@@ -1,0 +1,12 @@
+---
+pkgs:
+  - bash-completion
+  - vim-enhanced
+  - tmux
+  - tree
+  - docker
+
+pip_pkgs:
+  - ansible-container
+  - docker-py
+  - ipython
