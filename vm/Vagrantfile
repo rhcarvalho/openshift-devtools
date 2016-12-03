@@ -84,15 +84,19 @@ Vagrant.configure(2) do |config|
 
     # Ensure some useful packages are installed.
     PKGS=(
+      # personal
+      vim-enhanced
+      tmux #?
       bash-completion
+      tree
+
+      # requirements
       docker
-      git
       libffi-devel
       openssl-devel
       python-devel
       python-pip
       redhat-rpm-config
-      tree
     )
     dnf -qy install "${PKGS[@]}"
 
@@ -110,7 +114,13 @@ Vagrant.configure(2) do |config|
     pip install -qU pip
 
     # Install Python packages.
-    pip install -qU ansible ipython
+    PYTHON_PKGS=(
+      ansible
+      ansible-container
+      docker-py
+      ipython
+    )
+    pip install -qU "${PYTHON_PKGS[@]}"
 
     # Create docker group, so that `docker` can be used without `sudo`.
     groupadd -f docker
