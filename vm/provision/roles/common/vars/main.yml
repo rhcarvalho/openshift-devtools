@@ -6,6 +6,7 @@ pkgs:
   - tree
   - docker
   - golang
+  - git
 
 pip_pkgs:
   - ansible-container
