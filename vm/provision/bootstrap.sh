@@ -31,4 +31,4 @@ pip install -qU pip
 
 echo "Installing Ansible..."
 
-pip install ansible
+pip install -qU ansible
