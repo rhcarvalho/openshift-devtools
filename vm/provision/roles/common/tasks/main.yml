@@ -5,6 +5,10 @@
   register: dnf_result
   changed_when: '"Nothing to do." not in dnf_result.stdout_lines'
 
+- name: Upgrade all packages
+  become: yes
+  package: name=* state=latest
+
 - include: docker-pre.yml
   when: '"docker" in "{{ pkgs }}"'
 
