@@ -1,4 +1,16 @@
 ---
+- name: Create Go workspace
+  file:
+    path: "{{ ansible_user_dir }}/go/{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0755
+  with_items:
+    - src
+    - bin
+    - pkg
+
 - name: Set GOPATH
   lineinfile:
     dest: "{{ ansible_user_dir }}/.bashrc"
