@@ -27,4 +27,4 @@
   lineinfile:
     dest: "{{ ansible_user_dir }}/.bashrc"
     regexp: '^export CDPATH='
-    line: 'export CDPATH=.:${GOPATH//://src:}/src:${GOPATH##*:}/src/github.com/openshift:${GOPATH##*:}/src/github.com/rhcarvalho'
+    line: 'export CDPATH=".:${GOPATH//://src:}/src:${GOPATH##*:}/src/github.com/openshift:${GOPATH##*:}/src/github.com/rhcarvalho"'
