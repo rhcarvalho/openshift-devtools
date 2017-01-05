@@ -1,7 +1,7 @@
 ---
 - name: Create Go workspace
   file:
-    path: "{{ ansible_user_dir }}/go/{{ item }}"
+    path: "{{ ansible_user_dir }}/{{ item }}"
     state: directory
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}"
@@ -15,7 +15,7 @@
   lineinfile:
     dest: "{{ ansible_user_dir }}/.bashrc"
     regexp: '^export GOPATH='
-    line: 'export GOPATH=$HOME/go'
+    line: 'export GOPATH=$HOME'
 
 - name: Set PATH
   lineinfile:
