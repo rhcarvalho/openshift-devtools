@@ -12,3 +12,4 @@ pip_pkgs:
   - ansible-container
   - docker-py
   - ipython
+  - ipdb               # for instrospecting ansible
