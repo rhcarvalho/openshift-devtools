@@ -21,10 +21,10 @@
   lineinfile:
     dest: "{{ ansible_user_dir }}/.bashrc"
     regexp: '^export PATH='
-    line: 'export PATH="$PATH:${GOPATH//://bin:}/bin:$HOME/go/src/github.com/openshift/origin/_output/local/bin/linux/amd64:$HOME/go/src/github.com/openshift/source-to-image/_output/local/bin/linux/amd64"'
+    line: 'export PATH="$PATH:${GOPATH//://bin:}/bin:${GOPATH##*:}/src/github.com/openshift/origin/_output/local/bin/linux/amd64:${GOPATH##*:}/src/github.com/openshift/source-to-image/_output/local/bin/linux/amd64"'
 
 - name: Set CDPATH
   lineinfile:
     dest: "{{ ansible_user_dir }}/.bashrc"
     regexp: '^export CDPATH='
-    line: 'export CDPATH=.:${GOPATH//://src:}/src:$HOME/go/src/github.com/openshift:$HOME/go/src/github.com/rhcarvalho'
+    line: 'export CDPATH=.:${GOPATH//://src:}/src:${GOPATH##*:}/src/github.com/openshift:${GOPATH##*:}/src/github.com/rhcarvalho'
