@@ -1,0 +1,16 @@
+---
+pkgs:
+  - bash-completion
+  - vim-enhanced
+  - tmux
+  - tree
+  - docker
+  - golang
+  - git
+  - python3-devel
+
+pip_pkgs:
+  - ansible-container
+  - docker-py
+  - ipython
+  - ipdb               # for instrospecting ansible

@@ -1,0 +1,12 @@
+---
+- name: Ensure docker group exists
+  become: yes
+  group:
+    name: docker
+
+- name: Append docker group to current user
+  become: yes
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes

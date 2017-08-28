@@ -1,0 +1,37 @@
+---
+- name: Bootstrap dependencies of Ansible modules
+  become: yes
+  raw: dnf install -y python2-dnf libselinux-python
+  register: dnf_result
+  changed_when: '"Nothing to do." not in dnf_result.stdout_lines'
+
+- name: Upgrade all packages
+  become: yes
+  package: name=* state=latest
+
+- include: docker-pre.yml
+  when: '"docker" in "{{ pkgs }}"'
+
+- name: Install system packages
+  become: yes
+  package: name={{ item }} state=latest
+  with_items: "{{ pkgs }}"
+
+- include: docker-post.yml
+  when: '"docker" in "{{ pkgs }}"'
+
+- name: Install pip packages
+  become: yes
+  pip: name={{ item }} state=latest
+  with_items: "{{ pip_pkgs }}"
+
+- include: go.yml
+
+- name: Create/remove symlink to oc cluster up helper
+  file:
+    src: '{{ src }}'
+    dest: '{{ dest }}'
+    state: '{{ "link" if src|exists else "absent" }}'
+  vars:
+    src: /vagrant/bin/cluster-up
+    dest: /home/vagrant/bin/cluster-up

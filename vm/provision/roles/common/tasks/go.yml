@@ -1,0 +1,30 @@
+---
+- name: Create Go workspace
+  file:
+    path: "{{ ansible_user_dir }}/{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0755
+  with_items:
+    - src
+    - bin
+    - pkg
+
+- name: Set GOPATH
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^export GOPATH='
+    line: 'export GOPATH=$HOME'
+
+- name: Set PATH
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^export PATH='
+    line: 'export PATH="$PATH:${GOPATH##*:}/src/github.com/openshift/origin/_output/local/bin/linux/amd64:${GOPATH##*:}/src/github.com/openshift/source-to-image/_output/local/bin/linux/amd64:${GOPATH//://bin:}/bin"'
+
+- name: Set CDPATH
+  lineinfile:
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^export CDPATH='
+    line: 'export CDPATH=".:${GOPATH//://src:}/src:${GOPATH##*:}/src/github.com/openshift:${GOPATH##*:}/src/github.com/rhcarvalho"'

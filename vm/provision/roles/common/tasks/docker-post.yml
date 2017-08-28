@@ -1,0 +1,7 @@
+---
+- name: Ensure docker service is running
+  become: yes
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
