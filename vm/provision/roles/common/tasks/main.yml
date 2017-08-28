@@ -26,3 +26,12 @@
   with_items: "{{ pip_pkgs }}"
 
 - include: go.yml
+
+- name: Create/remove symlink to oc cluster up helper
+  file:
+    src: '{{ src }}'
+    dest: '{{ dest }}'
+    state: '{{ "link" if src|exists else "absent" }}'
+  vars:
+    src: /vagrant/bin/cluster-up
+    dest: /home/vagrant/bin/cluster-up

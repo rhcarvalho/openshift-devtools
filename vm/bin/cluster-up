@@ -1,0 +1,8 @@
+#!/bin/bash
+exec oc cluster up \
+	--public-hostname=10.1.2.3 \
+	--routing-suffix=10.1.2.3.xip.io \
+	#--logging \
+	#--metrics \
+	--use-existing-config \
+	--host-data-dir=/var/lib/origin/openshift.local.data
